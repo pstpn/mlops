@@ -7,4 +7,6 @@ tqdm
 typer
 pandas
 scipy
+matplotlib
+autoviz
 -e .

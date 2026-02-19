@@ -58,3 +58,21 @@ ITMO MLOps
 ```
 
 --------
+
+## Business target
+
+Main idea of this project -- predict scam operations in banking area.
+
+## Key metrics
+
+- Recall by Fraud class (Class=1) is the main metric
+    It shows how much fraud the model has caught.
+    The goal: to minimize FN (missed fraud).
+- F1-score in the Fraud class is the second main one
+    The balance between Recall and Precision.
+    It is necessary that the Recall does not grow due to too many false alarms.
+- Fraud class Precision — operational load control
+    How many of the triggers are actually fraud.
+    It is important for the volume of manual checks.
+- PR-AUC (Average Precision) — for comparing models with an imbalance
+    It is usually more informative than the ROC-AUC at 0.17% positive.
