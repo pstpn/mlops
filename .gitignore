@@ -189,3 +189,9 @@ cython_debug/
 
 # Tasks
 tasks-*.md
+
+# SQLite
+*.db
+
+# Experiments
+mlruns/
