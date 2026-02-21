@@ -51,6 +51,12 @@ run: build
 	docker run --rm $(PROJECT_NAME):latest
 
 
+## Remove Docker image
+.PHONY: rm
+rm:
+	docker image rm $(PROJECT_NAME):latest
+
+
 #################################################################################
 # PROJECT RULES                                                                 #
 #################################################################################

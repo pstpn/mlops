@@ -1,7 +1,7 @@
 from pathlib import Path
 
-import pandas as pd
 from loguru import logger
+import pandas as pd
 from scipy.io import arff
 import typer
 
@@ -55,8 +55,7 @@ def main(
 
     logger.info(f"Train shape: {train_df.shape}, Test shape: {test_df.shape}")
     logger.info(
-        "Class share (train/test): "
-        f"{train_df['Class'].mean():.4f} / {test_df['Class'].mean():.4f}"
+        f"Class share (train/test): {train_df['Class'].mean():.4f} / {test_df['Class'].mean():.4f}"
     )
     logger.success(f"Saved split datasets to {output_dir}")
 

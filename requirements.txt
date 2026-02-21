@@ -1,12 +1,12 @@
-loguru
-mkdocs
-pip
-python-dotenv
-ruff
-tqdm
-typer
-pandas
-scipy
-matplotlib
-autoviz
+loguru==0.7.3
+mkdocs==1.6.1
+pip==26.0.1
+python-dotenv==1.2.1
+ruff==0.15.1
+tqdm==4.67.3
+typer==0.24.0
+pandas==2.3.3
+scipy==1.17.0
+matplotlib==3.10.8
+autoviz==0.1.905
 -e .
