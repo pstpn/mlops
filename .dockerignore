@@ -1,0 +1,15 @@
+.dockerignore
+.dvcignore
+.gitignore
+.dvc/
+.git/
+.venv/
+.ruff_cache/
+docs/
+notebooks/
+references/
+reports/
+README.md
+mlflow.db
+Dockerfile
+tasks*.md
