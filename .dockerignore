@@ -9,7 +9,6 @@ docs/
 notebooks/
 references/
 reports/
-README.md
 mlflow.db
 Dockerfile
 tasks*.md
