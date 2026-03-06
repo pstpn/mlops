@@ -42,19 +42,25 @@ format:
 ## Build Docker image
 .PHONY: build
 build:
-	docker build -t $(PROJECT_NAME) .
+	docker build -t $(PROJECT_NAME):latest .
 
 
-## Run Docker image
-.PHONY: run
-run: build
-	docker run --rm $(PROJECT_NAME):latest
+## Up Docker compose services
+.PHONY: up
+up: build
+	docker compose up -d
 
 
-## Remove Docker image
-.PHONY: rm
-rm:
-	docker image rm $(PROJECT_NAME):latest
+## Down Docker compose services
+.PHONY: down
+down:
+	docker compose down
+
+
+## Fully remove Docker compose services
+.PHONY: rm-docker
+rm-docker: down
+	-docker image rm $(PROJECT_NAME):latest
 
 
 #################################################################################

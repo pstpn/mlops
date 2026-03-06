@@ -13,10 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt pyproject.toml README.md /app/
+COPY pyproject.toml README.md /app/
 COPY mlops /app/mlops
 
 RUN python -m pip install --upgrade pip && \
-    pip install -r requirements.txt
+    pip install .
 
 COPY . /app

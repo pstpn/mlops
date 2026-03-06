@@ -5,6 +5,7 @@
 .git/
 .venv/
 .ruff_cache/
+mlflow/
 docs/
 notebooks/
 references/
