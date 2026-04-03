@@ -1,0 +1,111 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python -m mlops.load_data --input-path data/raw/dataset --output-dir 
+      data/processed --test-size 0.2 --random-state 42
+    deps:
+    - path: data/raw/dataset
+      hash: md5
+      md5: d7d4434708894b1d786706505defd2fe
+      size: 156435299
+    - path: mlops/load_data.py
+      hash: md5
+      md5: 98c6e24edc07163750c0c7121067cff2
+      size: 1798
+    params:
+      params.yaml:
+        split.random_state: 42
+        split.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 4f80b9f67612d94a3eede50260d382cc
+      size: 31171193
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 7b7b8f31b0198da8994bc73fa0d773e4
+      size: 124692848
+  preprocess:
+    cmd: python -m mlops.preprocess --train-path data/processed/train.csv 
+      --test-path data/processed/test.csv --output-dir data/interim
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 4f80b9f67612d94a3eede50260d382cc
+      size: 31171193
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 7b7b8f31b0198da8994bc73fa0d773e4
+      size: 124692848
+    - path: mlops/preprocess.py
+      hash: md5
+      md5: 25b557b48efcdd73be83eeadcbb7ea63
+      size: 1856
+    outs:
+    - path: data/interim/feature_columns.json
+      hash: md5
+      md5: 3f835591ec3c4d04513d837c73fa15a8
+      size: 205
+    - path: data/interim/test_features.csv
+      hash: md5
+      md5: 3eaccd8c3586bfc37bb66569e96196bc
+      size: 30464263
+    - path: data/interim/test_target.csv
+      hash: md5
+      md5: f4368dd8ad2f7df832393ebe6150f1cb
+      size: 113788
+    - path: data/interim/train_features.csv
+      hash: md5
+      md5: 1ed543632e272d535c7a38624c19a2e0
+      size: 121627530
+    - path: data/interim/train_target.csv
+      hash: md5
+      md5: 64d8c3de36120c51fc5ca6cb25f1466e
+      size: 454256
+  train:
+    cmd: python -m mlops.train --train-features-path 
+      data/interim/train_features.csv --train-target-path 
+      data/interim/train_target.csv --test-features-path 
+      data/interim/test_features.csv --test-target-path 
+      data/interim/test_target.csv --model-path models/fraud_model.joblib 
+      --metrics-path reports/metrics.json --tracking-uri http://127.0.0.1:5001 
+      --experiment-name fraud-detection --n-estimators 400 --max-depth 12 
+      --min-samples-leaf 1 --random-state 42
+    deps:
+    - path: data/interim/test_features.csv
+      hash: md5
+      md5: 3eaccd8c3586bfc37bb66569e96196bc
+      size: 30464263
+    - path: data/interim/test_target.csv
+      hash: md5
+      md5: f4368dd8ad2f7df832393ebe6150f1cb
+      size: 113788
+    - path: data/interim/train_features.csv
+      hash: md5
+      md5: 1ed543632e272d535c7a38624c19a2e0
+      size: 121627530
+    - path: data/interim/train_target.csv
+      hash: md5
+      md5: 64d8c3de36120c51fc5ca6cb25f1466e
+      size: 454256
+    - path: mlops/train.py
+      hash: md5
+      md5: 2b6e2e0bb3911b28bbc5bfe5b99ce333
+      size: 3669
+    params:
+      params.yaml:
+        mlflow.experiment_name: fraud-detection
+        mlflow.tracking_uri: http://127.0.0.1:5001
+        model.max_depth: 12
+        model.min_samples_leaf: 1
+        model.n_estimators: 400
+        model.random_state: 42
+    outs:
+    - path: models/fraud_model.joblib
+      hash: md5
+      md5: 0132b3875ac16358d0a7c96fc5174d74
+      size: 8868914
+    - path: reports/metrics.json
+      hash: md5
+      md5: db88cdc3d27e64bc74916616ccbbcf16
+      size: 162

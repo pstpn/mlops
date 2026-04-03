@@ -27,6 +27,11 @@ dependencies = [
   "scipy==1.17.0",
   "matplotlib==3.10.8",
   "autoviz==0.1.905",
+  "scikit-learn==1.7.2",
+  "mlflow==3.5.1",
+  "joblib==1.5.2",
+  "fastapi==0.117.1",
+  "uvicorn==0.36.0",
 ]
 
 
