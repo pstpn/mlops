@@ -1,0 +1,18 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.10.1-full
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./mlflow:/mlflow
+    command: ["mlflow", "server", 
+              "--host", "0.0.0.0",
+              "--port", "5000",
+              "--backend-store-uri", "sqlite:////mlflow/mlflow.db",
+              "--serve-artifacts",
+              "--artifacts-destination", "/mlflow/artifacts"]
+  
+  app:
+    image: mlops:latest
+    ports:
+      - "8000:8000"
