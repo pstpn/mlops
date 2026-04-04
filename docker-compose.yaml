@@ -14,5 +14,12 @@ services:
   
   app:
     image: mlops:latest
+    depends_on:
+      - mlflow
+    environment:
+      - MODEL_PATH=/app/models/fraud_model.joblib
     ports:
       - "8000:8000"
+    command: ["uvicorn", "mlops.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    volumes:
+      - ./models:/app/models
