@@ -39,8 +39,8 @@ stages:
       size: 124692848
     - path: mlops/preprocess.py
       hash: md5
-      md5: 25b557b48efcdd73be83eeadcbb7ea63
-      size: 1856
+      md5: ed2e90cf707b47093104ea75fc43b628
+      size: 3201
     outs:
     - path: data/interim/feature_columns.json
       hash: md5
