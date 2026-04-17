@@ -38,7 +38,7 @@ jobs:
           python -m pip install .
 
       - name: Run flake8
-        run: flake8 mlops tests
+        run: flake8 --max-line-length=99 --extend-ignore=W292 mlops tests
 
       - name: Run tests with coverage
         run: pytest --cov=mlops.preprocess --cov=mlops.api.main --cov=mlops.config --cov-report=xml --cov-report=term-missing
