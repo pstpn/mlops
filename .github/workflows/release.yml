@@ -37,9 +37,34 @@ jobs:
 
       - name: Smoke test image
         run: |
+          set -euo pipefail
+
           docker pull $IMAGE_NAME:${GITHUB_REF_NAME}
           docker run -d --name mlops-smoke -p 8000:8000 -e MODEL_PATH=/app/models/fraud_model.joblib $IMAGE_NAME:${GITHUB_REF_NAME}
-          curl --retry 10 --retry-connrefused --retry-delay 2 http://localhost:8000/health
+
+          # Wait until API is healthy or fail fast if container exits.
+          ready=0
+          for _ in $(seq 1 30); do
+            if curl --silent --show-error --fail http://localhost:8000/health > /dev/null; then
+              ready=1
+              break
+            fi
+
+            if ! docker ps --filter "name=mlops-smoke" --filter "status=running" --format '{{.Names}}' | grep -q '^mlops-smoke$'; then
+              echo "Container exited before becoming healthy"
+              docker logs mlops-smoke || true
+              exit 1
+            fi
+
+            sleep 2
+          done
+
+          if [ "$ready" -ne 1 ]; then
+            echo "Service did not become healthy in time"
+            docker logs mlops-smoke || true
+            exit 1
+          fi
+
           curl --fail -X POST http://localhost:8000/predict \
             -H "Content-Type: application/json" \
             -d '{"Time":0,"V1":0,"V2":0,"V3":0,"V4":0,"V5":0,"V6":0,"V7":0,"V8":0,"V9":0,"V10":0,"V11":0,"V12":0,"V13":0,"V14":0,"V15":0,"V16":0,"V17":0,"V18":0,"V19":0,"V20":0,"V21":0,"V22":0,"V23":0,"V24":0,"V25":0,"V26":0,"V27":0,"V28":0,"Amount":0}'
