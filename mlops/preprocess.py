@@ -27,7 +27,9 @@ def validate_dataset(frame: pd.DataFrame, frame_name: str) -> None:
     empty_columns = [column for column in frame.columns if frame[column].isna().all()]
     if empty_columns:
         raise ValueError(
-            f"Dataset {frame_name} contains columns with only missing values: {', '.join(empty_columns)}"
+            "Dataset "
+            f"{frame_name} contains columns with only missing values: "
+            f"{', '.join(empty_columns)}"
         )
 
     if not pd.api.types.is_numeric_dtype(frame["Amount"]):
@@ -38,7 +40,9 @@ def drop_duplicate_rows(frame: pd.DataFrame) -> pd.DataFrame:
     return frame.drop_duplicates().reset_index(drop=True)
 
 
-def split_features_and_target(frame: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, list[str]]:
+def split_features_and_target(
+    frame: pd.DataFrame,
+) -> tuple[pd.DataFrame, pd.Series, list[str]]:
     feature_columns = [column for column in frame.columns if column != "Class"]
     features = frame[feature_columns]
     target = frame["Class"].astype(int)

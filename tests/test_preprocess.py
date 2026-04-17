@@ -13,7 +13,11 @@ from mlops.preprocess import (
 )
 
 
-def make_frame(*, amount_values: list[object] | None = None, class_values: list[int] | None = None) -> pd.DataFrame:
+def make_frame(
+    *,
+    amount_values: list[object] | None = None,
+    class_values: list[int] | None = None,
+) -> pd.DataFrame:
     amount_values = amount_values or [10.0, 20.0]
     class_values = class_values or [0, 1]
     return pd.DataFrame(
@@ -96,7 +100,10 @@ def test_save_preprocessed_artifacts_writes_files(tmp_path: Path) -> None:
     assert (tmp_path / "train_target.csv").exists()
     assert (tmp_path / "test_features.csv").exists()
     assert (tmp_path / "test_target.csv").exists()
-    assert (tmp_path / "feature_columns.json").read_text(encoding="utf-8") == '["Time", "V1", "Amount"]'
+    assert (
+        (tmp_path / "feature_columns.json").read_text(encoding="utf-8")
+        == '["Time", "V1", "Amount"]'
+    )
 
 
 def test_main_creates_expected_artifacts(tmp_path: Path) -> None:

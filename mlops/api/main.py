@@ -97,18 +97,28 @@ class TransactionFeatures(BaseModel):
     @model_validator(mode="after")
     def populate_scalar_features(self) -> "TransactionFeatures":
         if self.feature_vector is not None:
-            for column_name, value in zip(FEATURE_COLUMNS, self.feature_vector, strict=True):
+            for column_name, value in zip(
+                FEATURE_COLUMNS,
+                self.feature_vector,
+                strict=True,
+            ):
                 if getattr(self, column_name) is None:
                     setattr(self, column_name, value)
 
-        missing_fields = [column_name for column_name in FEATURE_COLUMNS if getattr(self, column_name) is None]
+        missing_fields = [
+            column_name
+            for column_name in FEATURE_COLUMNS
+            if getattr(self, column_name) is None
+        ]
         if missing_fields:
             raise ValueError(f"Missing required fields: {', '.join(missing_fields)}")
 
         return self
 
     def to_feature_frame(self) -> pd.DataFrame:
-        return pd.DataFrame([{column_name: getattr(self, column_name) for column_name in FEATURE_COLUMNS}])
+        return pd.DataFrame(
+            [{column_name: getattr(self, column_name) for column_name in FEATURE_COLUMNS}]
+        )
 
 
 class PredictionResponse(BaseModel):
@@ -147,7 +157,11 @@ def predict(payload: TransactionFeatures) -> PredictionResponse:
         else:
             prediction_raw = model.predict(features_df)
             # mlflow.pyfunc usually returns a pandas object
-            prediction = int(prediction_raw.iloc[0] if hasattr(prediction_raw, "iloc") else prediction_raw[0])
+            prediction = int(
+                prediction_raw.iloc[0]
+                if hasattr(prediction_raw, "iloc")
+                else prediction_raw[0]
+            )
             fraud_probability = float(prediction)
     except Exception as error:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {error}") from error
