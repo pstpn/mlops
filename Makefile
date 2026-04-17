@@ -69,6 +69,12 @@ repro:
 	dvc repro
 
 
+## Run tests
+.PHONY: test
+test:
+	python -m pytest -q tests/
+
+
 ## Invokes /predict endpoint with fraud operation params
 .PHONY: predict-fraud
 predict-fraud:
