@@ -1,37 +1,37 @@
 stages:
   load_data:
-    cmd: python -m mlops.load_data --input-path data/raw/dataset --output-dir data/processed --test-size ${split.test_size} --random-state ${split.random_state}
+    cmd: python -m mlops.load_data --input-path ${paths.raw_dataset} --output-dir ${paths.processed_dir} --test-size ${split.test_size} --random-state ${split.random_state}
     deps:
       - mlops/load_data.py
-      - data/raw/dataset
+      - ${paths.raw_dataset}
     params:
       - split.test_size
       - split.random_state
     outs:
-      - data/processed/train.csv
-      - data/processed/test.csv
+      - ${paths.processed_train_csv}
+      - ${paths.processed_test_csv}
 
   preprocess:
-    cmd: python -m mlops.preprocess --train-path data/processed/train.csv --test-path data/processed/test.csv --output-dir data/interim
+    cmd: python -m mlops.preprocess --train-path ${paths.processed_train_csv} --test-path ${paths.processed_test_csv} --output-dir ${paths.interim_dir}
     deps:
       - mlops/preprocess.py
-      - data/processed/train.csv
-      - data/processed/test.csv
+      - ${paths.processed_train_csv}
+      - ${paths.processed_test_csv}
     outs:
-      - data/interim/train_features.csv
-      - data/interim/train_target.csv
-      - data/interim/test_features.csv
-      - data/interim/test_target.csv
-      - data/interim/feature_columns.json
+      - ${paths.interim_train_features_csv}
+      - ${paths.interim_train_target_csv}
+      - ${paths.interim_test_features_csv}
+      - ${paths.interim_test_target_csv}
+      - ${paths.interim_feature_columns_json}
 
   train:
-    cmd: python -m mlops.train --train-features-path data/interim/train_features.csv --train-target-path data/interim/train_target.csv --test-features-path data/interim/test_features.csv --test-target-path data/interim/test_target.csv --model-path models/fraud_model.joblib --metrics-path reports/metrics.json --tracking-uri ${mlflow.tracking_uri} --experiment-name ${mlflow.experiment_name} --n-estimators ${model.n_estimators} --max-depth ${model.max_depth} --min-samples-leaf ${model.min_samples_leaf} --random-state ${model.random_state}
+    cmd: python -m mlops.train --train-features-path ${paths.interim_train_features_csv} --train-target-path ${paths.interim_train_target_csv} --test-features-path ${paths.interim_test_features_csv} --test-target-path ${paths.interim_test_target_csv} --model-path ${paths.model_path} --metrics-path ${paths.metrics_path} --tracking-uri ${mlflow.tracking_uri} --experiment-name ${mlflow.experiment_name} --n-estimators ${model.n_estimators} --max-depth ${model.max_depth} --min-samples-leaf ${model.min_samples_leaf} --random-state ${model.random_state}
     deps:
       - mlops/train.py
-      - data/interim/train_features.csv
-      - data/interim/train_target.csv
-      - data/interim/test_features.csv
-      - data/interim/test_target.csv
+      - ${paths.interim_train_features_csv}
+      - ${paths.interim_train_target_csv}
+      - ${paths.interim_test_features_csv}
+      - ${paths.interim_test_target_csv}
     params:
       - model.n_estimators
       - model.max_depth
@@ -40,6 +40,6 @@ stages:
       - mlflow.experiment_name
       - mlflow.tracking_uri
     outs:
-      - models/fraud_model.joblib
+      - ${paths.model_path}
     metrics:
-      - reports/metrics.json
+      - ${paths.metrics_path}

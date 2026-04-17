@@ -2,6 +2,20 @@ split:
   test_size: 0.2
   random_state: 42
 
+paths:
+  raw_dataset: data/raw/dataset
+  processed_dir: data/processed
+  processed_train_csv: data/processed/train.csv
+  processed_test_csv: data/processed/test.csv
+  interim_dir: data/interim
+  interim_train_features_csv: data/interim/train_features.csv
+  interim_train_target_csv: data/interim/train_target.csv
+  interim_test_features_csv: data/interim/test_features.csv
+  interim_test_target_csv: data/interim/test_target.csv
+  interim_feature_columns_json: data/interim/feature_columns.json
+  model_path: models/fraud_model.joblib
+  metrics_path: reports/metrics.json
+
 model:
   n_estimators: 400
   max_depth: 12
